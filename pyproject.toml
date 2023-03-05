@@ -8,6 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 psycopg2-binary = "^2.9.5"
+pillow = "^9.4.0"
+scrapy = "^2.8.0"
+aiofiles = "^23.1.0"
+sqlalchemy = "^2.0.4"
 
 
 [build-system]

@@ -1,0 +1,13 @@
+.alert-error, .errorlist {
+    color: crimson;
+}
+
+.alert-success {
+    color: green;
+}
+
+.logout {
+    background-color: red;
+    color: black;
+    margin-left: 500px;
+}

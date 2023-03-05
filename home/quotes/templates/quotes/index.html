@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>God of quotes</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'quotes/style.css' %}">
+</head>
+<body>
+<main class="container">
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+        {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url 'quotes:create_author' %}">Add author</a></li>
+            <li><a href="{% url 'quotes:create_quote' %}">Add quote</a></li>
+            <li><a class="logout" href="{% url 'users:logout' %}">Log out</a></li>
+        </ul>
+        {% else %}
+        <ul>
+            <li><a href="{% url 'users:login' %}" role="button">Log in</a></li>
+            <li><a href="{% url 'users:register' %}" role="button">Register</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+
+    {% for note in quotes %}
+    <ul>
+        <li><label>Quote: {{ note.quote }}</label></li>
+        <li><label>Tags: {{ note.tags }}</label></li>
+        <li><a href="{% url 'quotes:author_detail' author_id=note.author.author_id %}">Author: {{ note.author.fullname }}</a></li>
+        <a href="{% url 'quotes:details' quote_id=note.quote_id %}" role="button">Details</a>
+    </ul>
+    {% endfor %}
+</main>
+</body>
+</html>

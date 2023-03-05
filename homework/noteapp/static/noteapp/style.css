@@ -1,4 +1,7 @@
-.alter-erroe, .errorlist {
-    color: crismon;
+.alter-error, .errorlist {
+    color: crimson;
 }
 
+.alter-success {
+    color: green;
+}

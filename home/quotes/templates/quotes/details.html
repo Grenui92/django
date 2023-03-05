@@ -1,0 +1,20 @@
+{% extends "quotes/base.html" %}
+
+{% block content %}
+<div>
+    <label>Author:
+        <a href="{% url 'quotes:author_detail' author_id=quote.author.author_id %}">Author: {{ quote.author.fullname }}</a>
+    </label>
+    <label>Quote:
+        {{ quote.quote }}
+    </label>
+    <label>Tags:
+        {{ quote.tags }}
+    </label>
+</div>
+{% if user.is_authenticated %}
+<div>
+    <a href="{% url 'quotes:delete' quote_id=quote.quote_id %}" role="button">Delete quote</a>
+</div>
+{% endif %}
+{% endblock %}
