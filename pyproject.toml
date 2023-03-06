@@ -12,6 +12,7 @@ pillow = "^9.4.0"
 scrapy = "^2.8.0"
 aiofiles = "^23.1.0"
 sqlalchemy = "^2.0.4"
+django = "^3.2"
 
 
 [build-system]

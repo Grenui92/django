@@ -4,6 +4,7 @@ from .models import Quotes, Authors
 from .forms import QuoteForm, AuthorsForm
 import itertools
 
+
 def main(request):
     quotes_list = Quotes.objects.all()
     paginator = Paginator(quotes_list, 10)
@@ -22,6 +23,7 @@ def create_quote(request):
             return redirect(to='quotes:main')
     return render(request, 'quotes/create_quote.html', context={'form': form})
 
+
 def create_author(request):
     form = AuthorsForm()
     if request.method == 'POST':
@@ -31,14 +33,17 @@ def create_author(request):
             return redirect(to='quotes:main')
     return render(request, 'quotes/create_author.html', context={'form': form})
 
+
 def author_detail(request, author_id):
     author = get_object_or_404(Authors, author_id=author_id)
     return render(request, 'quotes/author_detail.html', {'author': author})
+
 
 def details(request, quote_id):
     quote = get_object_or_404(Quotes, quote_id=quote_id)
     quote.tags = tags_list_to_str(quote.tags)
     return render(request, 'quotes/details.html', {'quote': quote})
+
 
 def delete_quote(request, quote_id):
     Quotes.objects.get(pk=quote_id).delete()
@@ -51,6 +56,7 @@ def tags_list_to_str(tags):
     elif len(tags) == 1:
         tags = tags[0]
     return tags
+
 
 def search_in_tags(request, tag):
     quotes = Quotes.objects.filter(tags__icontains=tag)
