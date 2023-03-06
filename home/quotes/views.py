@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .models import Quotes, Authors
 from .forms import QuoteForm, AuthorsForm
-
+import itertools
 
 def main(request):
-    quotes = Quotes.objects.all()
-    for quote in quotes:
-        quote.tags = tags_list_to_str(quote.tags)
-    return render(request, 'quotes/index.html', {'quotes': quotes})
+    quotes_list = Quotes.objects.all()
+    paginator = Paginator(quotes_list, 10)
+    page = request.GET.get('page')
+    text = 'Main'
+    quotes = paginator.get_page(page)
+    return render(request, 'quotes/index.html', {'quotes': quotes, 'text': text})
 
 
 def create_quote(request):
@@ -49,3 +51,21 @@ def tags_list_to_str(tags):
     elif len(tags) == 1:
         tags = tags[0]
     return tags
+
+def search_in_tags(request, tag):
+    quotes = Quotes.objects.filter(tags__icontains=tag)
+    text = f'Search by "{tag}"'
+    return render(request, 'quotes/index.html', {'quotes': quotes, 'text': text})
+
+
+def top_ten_tags(request):
+    tags = Quotes.objects.values_list('tags', flat=True)
+    tags_list = list(itertools.chain.from_iterable(tags))
+    tags_set = set(tags_list)
+    result = []
+    for tag in tags_set:
+        count = tags_list.count(tag)
+        result.append([tag, count])
+    tags = sorted(result, key=lambda x: x[1], reverse=True)[:10]
+    print(tags)
+    return render(request, 'quotes/top_ten_tags.html', {'tags': tags})

@@ -9,11 +9,16 @@
 </head>
 <body>
 <main class="container">
-    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-right: 0px">
+        <ul>
+            <li><a href="/">Main page</a></li>
+            <li><a href="{% url 'quotes:top_ten_tags' %}">Top ten</a></li>
+        </ul>
         {% if user.is_authenticated %}
         <ul>
-            <li><a href="{% url 'quotes:create_author' %}">Add author</a></li>
-            <li><a href="{% url 'quotes:create_quote' %}">Add quote</a></li>
+            <li><a href="{% url 'quotes:create_author' %}" role="button">Add author</a></li>
+            <li><a href="{% url 'quotes:create_quote' %}" role="button">Add quote</a></li>
             <li><a class="logout" href="{% url 'users:logout' %}">Log out</a></li>
         </ul>
         {% else %}
@@ -23,15 +28,36 @@
         </ul>
         {% endif %}
     </nav>
-
+    <h3>{{ text }}</h3>
     {% for note in quotes %}
     <ul>
         <li><label>Quote: {{ note.quote }}</label></li>
-        <li><label>Tags: {{ note.tags }}</label></li>
+        <li>
+            <label>Tags:
+                {% for tag in note.tags %}
+                <a href="{% url 'quotes:search_in_tags' tag=tag %}"> {{ tag }}</a>
+                {% endfor %}
+            </label>
+        </li>
         <li><a href="{% url 'quotes:author_detail' author_id=note.author.author_id %}">Author: {{ note.author.fullname }}</a></li>
         <a href="{% url 'quotes:details' quote_id=note.quote_id %}" role="button">Details</a>
     </ul>
     {% endfor %}
+    <span>
+        {% if quotes.has_previous %}
+            <a href="?page=1">&lt;&lt;first</a>
+            <a href="?page={{ quotes.previous_page_number }}">&nbsp;&nbsp;&lt;previous&nbsp;</a>
+        {% endif %}
+
+        <span>
+            Page {{ quotes.number }} of {{ quotes.paginator.num_pages }}
+        </span>
+
+        {% if quotes.has_next %}
+            <a href="?page={{ quotes.next_page_number }}">&nbsp;next&gt;&nbsp;&nbsp;</a>
+            <a href="?page={{ quotes.paginator.num_pages }}">last&gt;&gt;</a>
+        {% endif %}
+    </span>
 </main>
 </body>
 </html>
