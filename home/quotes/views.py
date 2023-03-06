@@ -41,7 +41,6 @@ def author_detail(request, author_id):
 
 def details(request, quote_id):
     quote = get_object_or_404(Quotes, quote_id=quote_id)
-    quote.tags = tags_list_to_str(quote.tags)
     return render(request, 'quotes/details.html', {'quote': quote})
 
 
@@ -61,7 +60,7 @@ def tags_list_to_str(tags):
 def search_in_tags(request, tag):
     quotes = Quotes.objects.filter(tags__icontains=tag)
     text = f'Search by "{tag}"'
-    return render(request, 'quotes/index.html', {'quotes': quotes, 'text': text})
+    return render(request, 'quotes/search_result.html', {'quotes': quotes, 'text': text})
 
 
 def top_ten_tags(request):

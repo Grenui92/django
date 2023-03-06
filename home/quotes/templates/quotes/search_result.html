@@ -1,0 +1,21 @@
+{% extends "quotes/base.html" %}
+
+{% block content %}
+<div>
+    <h3>{{ text }}</h3>
+    {% for quote in quotes %}
+    <ul>
+        <li><label>Quote: {{ quote.quote }}</label></li>
+        <li>
+            <label>Tags:
+                {% for tag in quote.tags %}
+                <a href="{% url 'quotes:search_in_tags' tag=tag %}"> {{ tag }}</a>
+                {% endfor %}
+            </label>
+        </li>
+        <li><a href="{% url 'quotes:author_detail' author_id=quote.author.author_id %}">Author: {{ quote.author.fullname }}</a></li>
+        <a href="{% url 'quotes:details' quote_id=quote.quote_id %}" role="button">Details</a>
+    </ul>
+    {% endfor %}
+</div>
+{% endblock %}
