@@ -27,7 +27,7 @@ class Authors(models.Model):
 class Quotes(models.Model):
     quote_id = models.AutoField(primary_key=True)
     tags = ArrayField(models.TextField(max_length=255))
-    author = models.ForeignKey(Authors, on_delete=models.CASCADE, db_column='author')
+    author = models.ForeignKey(Authors, on_delete=models.SET_NULL, db_column='author')
     quote = models.TextField(max_length=2000)
 
     class Meta:
