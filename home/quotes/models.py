@@ -11,10 +11,10 @@ from django.contrib.postgres.fields import ArrayField
 
 class Authors(models.Model):
     author_id = models.AutoField(primary_key=True)
-    fullname = models.CharField(max_length=250)
-    born_date = models.CharField(max_length=20, blank=True, null=True)
-    born_location = models.CharField(max_length=250, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    fullname = models.CharField(max_length=255)
+    born_date = models.DateField()
+    born_location = models.CharField(max_length=255)
+    description = models.TextField(max_length=2000)
 
     def __str__(self):
         return self.fullname
@@ -26,9 +26,9 @@ class Authors(models.Model):
 
 class Quotes(models.Model):
     quote_id = models.AutoField(primary_key=True)
-    tags = ArrayField(models.TextField(), blank=True, null=True)  # This field type is a guess.
-    author = models.ForeignKey(Authors, models.DO_NOTHING, db_column='author', blank=True, null=True)
-    quote = models.TextField(blank=True, null=True)
+    tags = ArrayField(models.TextField(max_length=255))
+    author = models.ForeignKey(Authors, on_delete=models.CASCADE, db_column='author')
+    quote = models.TextField(max_length=2000)
 
     class Meta:
         managed = False
