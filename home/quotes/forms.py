@@ -23,9 +23,9 @@ class AuthorsForm(forms.ModelForm):
     fullname = forms.CharField(max_length=100,
                                required=True,
                                widget=forms.TextInput())
-    born_date = forms.CharField(max_length=100,
+    born_date = forms.DateField(input_formats=['%d.%m.%Y'],
                                 required=True,
-                                widget=forms.TextInput())
+                                error_messages={'invalid': 'Enter date in format "dd.mm.YYYY"'})
     born_location = forms.CharField(max_length=100,
                                 required=True,
                                 widget=forms.TextInput())
